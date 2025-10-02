@@ -48,241 +48,177 @@ function updateThemeIcon() {
     }
 }
 
-// Обработка лайков
-document.addEventListener('DOMContentLoaded', () => {
-    const likeButtons = document.querySelectorAll('.like-btn');
-    
-    likeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const icon = this.querySelector('i');
-            const countSpan = this.querySelector('span');
-            let count = parseInt(countSpan.textContent);
-            
-            // Переключение состояний лайка
-            if (this.classList.contains('active')) {
-                this.classList.remove('active');
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                countSpan.textContent = count - 1;
-                this.style.color = '';
-            } else {
-                this.classList.add('active');
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                countSpan.textContent = count + 1;
-                
-                // Анимация "пульсации"
-                this.style.transform = 'scale(1.1)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 200);
-            }
-        });
-    });
-    
-    // Обработка кнопки публикации (только на главной)
-    const publishBtn = document.querySelector('.publish-btn');
-    const postText = document.querySelector('.post-text');
-    
-    if (publishBtn && postText) {
-        publishBtn.addEventListener('click', () => {
-            if (postText.value.trim() !== '') {
-                alert('Пост опубликован!');
-                postText.value = '';
-            } else {
-                alert('Введите текст поста');
-            }
-        });
-        
-        // Enter для публикации
-        postText.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                publishBtn.click();
-            }
-        });
-    }
-    
-    // Обработка кнопок "Написать" на странице друзей
-    const friendActions = document.querySelectorAll('.friend-action');
-    friendActions.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const friendName = this.closest('.friend-card').querySelector('h3').textContent;
-            alert(`Открывается чат с ${friendName}`);
-        });
-    });
-    
-    // Обработка кликов по чатам
-    const chatItems = document.querySelectorAll('.chat-item');
-    chatItems.forEach(chat => {
-        chat.addEventListener('click', function() {
-            const chatName = this.querySelector('h3').textContent;
-            alert(`Открывается чат с ${chatName}`);
-            
-            // Убираем бейдж при открытии чата
-            const badge = this.querySelector('.chat-badge');
-            if (badge) {
-                badge.remove();
-            }
-        });
-    });
-    
-    // Поиск друзей
-    const searchInput = document.querySelector('.search-input');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const friendCards = document.querySelectorAll('.friend-card');
-            
-            friendCards.forEach(card => {
-                const friendName = card.querySelector('h3').textContent.toLowerCase();
-                if (friendName.includes(searchTerm)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    }
-    
-    // Переход на страницу профиля при клике на аватар
-    const userAvatar = document.querySelector('.user-avatar');
-    if (userAvatar) {
-        userAvatar.addEventListener('click', function() {
-            // Определяем правильный путь к профилю в зависимости от текущей страницы
-            let profilePath = 'pages/profile.html';
-            
-            // Если мы уже в папке pages, путь будет другим
-            if (window.location.pathname.includes('/pages/') || 
-                window.location.href.includes('/pages/')) {
-                profilePath = 'profile.html';
-            }
-            
-            window.location.href = profilePath;
-        });
-        
-        // Добавляем курсор-указатель
-        userAvatar.style.cursor = 'pointer';
-        
-        // Добавляем подсказку при наведении
-        userAvatar.title = 'Мой профиль';
-    }
-    
-    // Активная навигация
-    updateActiveNavigation();
-});
+// API функции
+const API_BASE = '';
 
-// Функция для обновления активной навигации
-function updateActiveNavigation() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const tabs = document.querySelectorAll('.tab');
-    
-    tabs.forEach(tab => {
-        const tabHref = tab.getAttribute('href');
+// Загрузка постов
+async function loadPosts() {
+    try {
+        const postsContainer = document.getElementById('posts-container');
+        if (postsContainer) {
+            postsContainer.innerHTML = '<div class="loading">Загрузка постов...</div>';
+        }
+
+        const response = await fetch('/api/posts');
+        if (!response.ok) throw new Error('Ошибка загрузки постов');
         
-        // Для главной страницы
-        if (currentPage === 'index.html' && (tabHref === 'index.html' || tabHref === '../index.html')) {
-            tab.classList.add('active');
+        const posts = await response.json();
+        displayPosts(posts);
+    } catch (error) {
+        console.error('Ошибка загрузки постов:', error);
+        const postsContainer = document.getElementById('posts-container');
+        if (postsContainer) {
+            postsContainer.innerHTML = '<div class="error">Не удалось загрузить посты</div>';
         }
-        // Для страницы друзей
-        else if (currentPage === 'friends.html' && tabHref === 'friends.html') {
-            tab.classList.add('active');
-        }
-        // Для страницы чатов
-        else if (currentPage === 'chats.html' && tabHref === 'chats.html') {
-            tab.classList.add('active');
-        }
-        // Для страницы профиля
-        else if (currentPage === 'profile.html' && tabHref === 'profile.html') {
-            tab.classList.add('active');
-        }
-        // Для случаев когда мы на главной, а ссылка ведет на pages/...
-        else if (currentPage === 'index.html' && tabHref.includes('pages/')) {
-            tab.classList.remove('active');
-        }
-        else {
-            tab.classList.remove('active');
-        }
+    }
+}
+
+// Отображение постов
+function displayPosts(posts) {
+    const postsContainer = document.getElementById('posts-container');
+    if (!postsContainer) return;
+
+    if (posts.length === 0) {
+        postsContainer.innerHTML = '<div class="empty-state">Пока нет постов</div>';
+        return;
+    }
+
+    postsContainer.innerHTML = '';
+    posts.forEach(post => {
+        const postElement = createPostElement(post);
+        postsContainer.appendChild(postElement);
     });
 }
 
-// Анимация появления элементов при загрузке
-window.addEventListener('load', () => {
-    const postCards = document.querySelectorAll('.post-card');
-    const friendCards = document.querySelectorAll('.friend-card');
-    const chatItems = document.querySelectorAll('.chat-item');
+// Создание элемента поста
+function createPostElement(post) {
+    const postElement = document.createElement('div');
+    postElement.className = 'post-card';
+    postElement.innerHTML = `
+        <div class="post-header">
+            <img src="${post.author?.avatar || 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff'}" alt="Аватар" class="user-avatar">
+            <div class="post-user">
+                <h3>${post.author?.name || 'Пользователь'}</h3>
+                <span>${formatPostDate(post.createdAt)}</span>
+            </div>
+        </div>
+        <div class="post-content">
+            <p>${post.content}</p>
+        </div>
+        <div class="post-actions">
+            <button class="action-btn like-btn"><i class="far fa-heart"></i> <span>${post.likes || 0}</span></button>
+            <button class="action-btn comment-btn"><i class="far fa-comment"></i> <span>${post.comments || 0}</span></button>
+            <button class="action-btn share-btn"><i class="far fa-share-square"></i> <span>Поделиться</span></button>
+        </div>
+    `;
     
-    // Анимация для постов
-    postCards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-    });
-    
-    // Анимация для карточек друзей
-    friendCards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-    });
-    
-    // Анимация для чатов
-    chatItems.forEach((item, index) => {
-        item.style.animationDelay = `${index * 0.1}s`;
-    });
-});
+    return postElement;
+}
 
-// Обработка ошибок изображений
-document.addEventListener('DOMContentLoaded', () => {
-    const images = document.querySelectorAll('img');
-    images.forEach(img => {
-        img.addEventListener('error', function() {
-            this.src = 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff';
-            this.alt = 'Изображение не загружено';
+// Создание нового поста
+async function createPost(content) {
+    try {
+        const response = await fetch('/api/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content: content,
+                authorId: 1 // Временное значение, пока нет системы авторизации
+            })
         });
-    });
-});
-
-// Плавный скролл для навигации
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+        
+        if (response.ok) {
+            return true;
         }
-    });
-});
+        throw new Error('Ошибка создания поста');
+    } catch (error) {
+        console.error('Ошибка создания поста:', error);
+        return false;
+    }
+}
 
-// Добавляем класс при скролле для навигации
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+// Загрузка пользователей (для страницы друзей)
+async function loadUsers() {
+    try {
+        const friendsContainer = document.getElementById('friends-container');
+        if (friendsContainer) {
+            friendsContainer.innerHTML = '<div class="loading">Загрузка друзей...</div>';
+        }
+
+        const response = await fetch('/api/users');
+        if (!response.ok) throw new Error('Ошибка загрузки пользователей');
+        
+        const users = await response.json();
+        displayUsers(users);
+    } catch (error) {
+        console.error('Ошибка загрузки пользователей:', error);
+        const friendsContainer = document.getElementById('friends-container');
+        if (friendsContainer) {
+            friendsContainer.innerHTML = '<div class="error">Не удалось загрузить список друзей</div>';
         }
     }
-});
+}
 
-// Инициализация при загрузке
-window.addEventListener('DOMContentLoaded', () => {
-    console.log('СоцСеть загружена!');
+// Отображение пользователей
+function displayUsers(users) {
+    const friendsContainer = document.getElementById('friends-container');
+    if (!friendsContainer) return;
+
+    if (users.length === 0) {
+        friendsContainer.innerHTML = '<div class="empty-state">Пока нет друзей</div>';
+        return;
+    }
+
+    friendsContainer.innerHTML = '';
+    users.forEach(user => {
+        const userElement = createUserElement(user);
+        friendsContainer.appendChild(userElement);
+    });
+}
+
+// Создание элемента пользователя
+function createUserElement(user) {
+    const userElement = document.createElement('div');
+    userElement.className = 'friend-card';
+    userElement.innerHTML = `
+        <img src="${user.avatar || 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff'}" alt="Аватар ${user.name}" class="user-avatar">
+        <div class="friend-info">
+            <h3>${user.name}</h3>
+            <p>${user.email}</p>
+            <span>Online</span>
+        </div>
+        <button class="friend-action">Написать</button>
+    `;
     
-    // Проверяем поддержку localStorage
-    if (typeof(Storage) === "undefined") {
-        console.warn('LocalStorage не поддерживается, тема не будет сохраняться');
-    }
-});
+    return userElement;
+}
 
-// Функция для показа уведомлений (используется в profile.js)
+// Форматирование даты поста
+function formatPostDate(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 1) return 'Только что';
+    if (diffMins < 60) return `${diffMins} мин назад`;
+    if (diffHours < 24) return `${diffHours} ч назад`;
+    if (diffDays === 1) return 'Вчера';
+    if (diffDays < 7) return `${diffDays} дн назад`;
+    
+    return date.toLocaleDateString('ru-RU');
+}
+
+// Показ уведомлений
 function showNotification(message, type = 'info') {
-    // Создаем элемент уведомления
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
-    // Стили для уведомления
     notification.style.cssText = `
         position: fixed;
         top: 100px;
@@ -300,7 +236,6 @@ function showNotification(message, type = 'info') {
     
     document.body.appendChild(notification);
     
-    // Удаляем уведомление через 3 секунды
     setTimeout(() => {
         notification.style.animation = 'slideOutRight 0.3s ease';
         setTimeout(() => {
@@ -311,10 +246,162 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
-// Добавляем анимации для уведомлений в CSS, если их еще нет
-if (!document.querySelector('#notification-styles')) {
+// Основная инициализация
+document.addEventListener('DOMContentLoaded', () => {
+    // Обработка лайков
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.like-btn')) {
+            const button = e.target.closest('.like-btn');
+            const icon = button.querySelector('i');
+            const countSpan = button.querySelector('span');
+            let count = parseInt(countSpan.textContent);
+            
+            if (button.classList.contains('active')) {
+                button.classList.remove('active');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                countSpan.textContent = count - 1;
+                button.style.color = '';
+            } else {
+                button.classList.add('active');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                countSpan.textContent = count + 1;
+                
+                button.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }
+    });
+    
+    // Публикация поста на главной
+    const publishBtn = document.getElementById('publish-btn');
+    const postText = document.getElementById('post-text');
+    
+    if (publishBtn && postText) {
+        publishBtn.addEventListener('click', async () => {
+            if (postText.value.trim() !== '') {
+                const success = await createPost(postText.value.trim());
+                if (success) {
+                    postText.value = '';
+                    showNotification('Пост опубликован!', 'success');
+                    loadPosts(); // Перезагружаем посты
+                } else {
+                    showNotification('Ошибка публикации', 'error');
+                }
+            } else {
+                showNotification('Введите текст поста', 'error');
+            }
+        });
+        
+        postText.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                publishBtn.click();
+            }
+        });
+    }
+    
+    // Поиск друзей
+    const searchInput = document.getElementById('search-friends');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const friendCards = document.querySelectorAll('.friend-card');
+            
+            friendCards.forEach(card => {
+                const friendName = card.querySelector('h3').textContent.toLowerCase();
+                if (friendName.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+    
+    // Обработка кнопок "Написать"
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.friend-action')) {
+            const button = e.target.closest('.friend-action');
+            const friendName = button.closest('.friend-card').querySelector('h3').textContent;
+            showNotification(`Открывается чат с ${friendName}`, 'info');
+        }
+    });
+    
+    // Переход на профиль
+    const userAvatar = document.querySelector('.user-avatar');
+    if (userAvatar) {
+        userAvatar.addEventListener('click', function() {
+            let profilePath = 'pages/profile.html';
+            
+            if (window.location.pathname.includes('/pages/')) {
+                profilePath = 'profile.html';
+            }
+            
+            window.location.href = profilePath;
+        });
+        
+        userAvatar.style.cursor = 'pointer';
+        userAvatar.title = 'Мой профиль';
+    }
+    
+    // Загрузка данных в зависимости от страницы
+    if (document.getElementById('posts-container')) {
+        loadPosts(); // Главная страница
+    }
+    
+    if (document.getElementById('friends-container')) {
+        loadUsers(); // Страница друзей
+    }
+    
+    // Активная навигация
+    updateActiveNavigation();
+});
+
+// Обновление активной навигации
+function updateActiveNavigation() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const tabs = document.querySelectorAll('.tab');
+    
+    tabs.forEach(tab => {
+        const tabHref = tab.getAttribute('href');
+        
+        if (currentPage === 'index.html' && (tabHref === 'index.html' || tabHref === '../index.html')) {
+            tab.classList.add('active');
+        } else if (currentPage === 'friends.html' && tabHref === 'friends.html') {
+            tab.classList.add('active');
+        } else if (currentPage === 'chats.html' && tabHref === 'chats.html') {
+            tab.classList.add('active');
+        } else if (currentPage === 'profile.html' && tabHref === 'profile.html') {
+            tab.classList.add('active');
+        } else if (currentPage === 'index.html' && tabHref.includes('pages/')) {
+            tab.classList.remove('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+}
+
+// Анимации при загрузке
+window.addEventListener('load', () => {
+    const postCards = document.querySelectorAll('.post-card');
+    const friendCards = document.querySelectorAll('.friend-card');
+    
+    postCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+    
+    friendCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+
+// Добавляем стили для уведомлений и состояний загрузки
+if (!document.querySelector('#dynamic-styles')) {
     const style = document.createElement('style');
-    style.id = 'notification-styles';
+    style.id = 'dynamic-styles';
     style.textContent = `
         @keyframes slideInRight {
             from {
@@ -338,12 +425,25 @@ if (!document.querySelector('#notification-styles')) {
             }
         }
         
+        .loading, .error, .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .error {
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+        
         .navbar.scrolled {
             background-color: var(--nav-bg);
             backdrop-filter: blur(20px);
         }
         
-        /* Кастомный скроллбар */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -364,46 +464,15 @@ if (!document.querySelector('#notification-styles')) {
     document.head.appendChild(style);
 }
 
-// Функция для загрузки данных пользователя (используется в разных местах)
-function getUserData() {
-    return JSON.parse(localStorage.getItem('userData')) || {
-        name: 'Пользователь',
-        avatar: 'https://ui-avatars.com/api/?name=Пользователь&background=6366f1&color=fff'
-    };
-}
-
-// Функция для обновления аватара в навигации
-function updateNavigationAvatar(avatarUrl) {
-    const navAvatars = document.querySelectorAll('.nav-controls .user-avatar');
-    navAvatars.forEach(avatar => {
-        avatar.src = avatarUrl;
+// Обработка ошибок изображений
+document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            this.src = 'https://ui-avatars.com/api/?name=User&background=6366f1&color=fff';
+            this.alt = 'Изображение не загружено';
+        });
     });
-}
+});
 
-// Утилита для форматирования даты
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 1) {
-        return 'Вчера';
-    } else if (diffDays < 7) {
-        return `${diffDays} дней назад`;
-    } else {
-        return date.toLocaleDateString('ru-RU');
-    }
-}
-
-// Функция для проверки авторизации (можно расширить)
-function checkAuth() {
-    const userData = localStorage.getItem('userData');
-    if (!userData && window.location.pathname.includes('pages/')) {
-        // Если пользователь не авторизован и пытается зайти на защищенную страницу
-        // window.location.href = '../index.html';
-    }
-}
-
-// Вызываем проверку авторизации при загрузке
-document.addEventListener('DOMContentLoaded', checkAuth);
+console.log('Social Network initialized');

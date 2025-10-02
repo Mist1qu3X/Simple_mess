@@ -12,11 +12,11 @@
         <div class="nav-container">
             <div class="logo">
                 <i class="fas fa-users"></i>
-                <span>Doxogram</span>
+                <span>СоцСеть</span>
             </div>
             
             <div class="nav-tabs">
-                <a href="friends.html" class="tab">Друзья</a>
+                <a href="friends.html" class="tab active">Друзья</a>
                 <a href="../index.html" class="tab">Лента</a>
                 <a href="chats.html" class="tab">Чаты</a>
             </div>
@@ -40,39 +40,12 @@
             </div>
             
             <div class="search-friends">
-                <input type="text" placeholder="Поиск друзей..." class="search-input">
+                <input type="text" placeholder="Поиск друзей..." class="search-input" id="search-friends">
             </div>
             
-            <div class="friends-grid">
-                <div class="friend-card">
-                    <img src="https://ui-avatars.com/api/?name=Алексей+Иванов&background=10b981&color=fff" alt="Аватар Алексея Иванова" class="user-avatar">
-                    <div class="friend-info">
-                        <h3>Алексей Иванов</h3>
-                        <p>24 года</p>
-                        <span>Online</span>
-                    </div>
-                    <button class="friend-action">Написать</button>
-                </div>
-                
-                <div class="friend-card">
-                    <img src="https://ui-avatars.com/api/?name=Мария+Петрова&background=8b5cf6&color=fff" alt="Аватар Марии Петровой" class="user-avatar">
-                    <div class="friend-info">
-                        <h3>Мария Петрова</h3>
-                        <p>26 лет</p>
-                        <span>Был(a) 2 часа назад</span>
-                    </div>
-                    <button class="friend-action">Написать</button>
-                </div>
-                
-                <div class="friend-card">
-                    <img src="https://ui-avatars.com/api/?name=Дмитрий+Сидоров&background=f59e0b&color=fff" alt="Аватар Дмитрия Сидорова" class="user-avatar">
-                    <div class="friend-info">
-                        <h3>Дмитрий Сидоров</h3>
-                        <p>28 лет</p>
-                        <span>Online</span>
-                    </div>
-                    <button class="friend-action">Написать</button>
-                </div>
+            <div class="friends-grid" id="friends-container">
+                <!-- Список друзей будет загружаться через API -->
+                <div class="loading">Загрузка друзей...</div>
             </div>
         </div>
     </main>

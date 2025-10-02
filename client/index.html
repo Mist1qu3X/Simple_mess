@@ -8,12 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Навигационная панель -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
                 <i class="fas fa-users"></i>
-                <span>Doxogram</span>
+                <span>СоцСеть</span>
             </div>
             
             <div class="nav-tabs">
@@ -27,13 +26,12 @@
                     <i class="fas fa-moon"></i>
                 </button>
                 <div class="user-menu">
-                    <img src="https://ui-avatars.com/api/?name=Пользователь&background=6366f1&color=fff" alt="Аватар" class="user-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Пользователь&background=6366f1&color=fff" alt="Аватар" class="user-avatar" id="user-avatar">
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Основной контент -->
     <main class="main-content">
         <div class="container">
             <div class="content-header">
@@ -45,78 +43,20 @@
             <div class="create-post">
                 <div class="post-input">
                     <img src="https://ui-avatars.com/api/?name=Пользователь&background=6366f1&color=fff" alt="Ваш аватар" class="user-avatar">
-                    <input type="text" placeholder="Что у вас нового?" class="post-text">
+                    <input type="text" placeholder="Что у вас нового?" class="post-text" id="post-text">
                 </div>
                 <div class="post-actions-create">
                     <button class="action-btn-create"><i class="fas fa-image"></i> Фото</button>
                     <button class="action-btn-create"><i class="fas fa-video"></i> Видео</button>
                     <button class="action-btn-create"><i class="fas fa-map-marker-alt"></i> Место</button>
-                    <button class="publish-btn">Опубликовать</button>
+                    <button class="publish-btn" id="publish-btn">Опубликовать</button>
                 </div>
             </div>
             
             <!-- Лента постов -->
-            <div class="posts">
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="https://ui-avatars.com/api/?name=Алексей+Иванов&background=10b981&color=fff" alt="Аватар Алексея Иванова" class="user-avatar">
-                        <div class="post-user">
-                            <h3>Алексей Иванов</h3>
-                            <span>2 часа назад</span>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <p>Сегодня был на прекрасной выставке современного искусства. Рекомендую всем посетить!</p>
-                        <div class="post-image">
-                            <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Выставка искусства">
-                        </div>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-btn like-btn"><i class="far fa-heart"></i> <span>24</span></button>
-                        <button class="action-btn comment-btn"><i class="far fa-comment"></i> <span>8</span></button>
-                        <button class="action-btn share-btn"><i class="far fa-share-square"></i> <span>Поделиться</span></button>
-                    </div>
-                </div>
-                
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="https://ui-avatars.com/api/?name=Мария+Петрова&background=8b5cf6&color=fff" alt="Аватар Марии Петровой" class="user-avatar">
-                        <div class="post-user">
-                            <h3>Мария Петрова</h3>
-                            <span>5 часов назад</span>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <p>Только что закончила работу над новым проектом. Очень довольна результатом! 🎉</p>
-                        <p>#работа #проект #успех</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-btn like-btn"><i class="far fa-heart"></i> <span>42</span></button>
-                        <button class="action-btn comment-btn"><i class="far fa-comment"></i> <span>15</span></button>
-                        <button class="action-btn share-btn"><i class="far fa-share-square"></i> <span>Поделиться</span></button>
-                    </div>
-                </div>
-
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="https://ui-avatars.com/api/?name=Дмитрий+Сидоров&background=f59e0b&color=fff" alt="Аватар Дмитрия Сидорова" class="user-avatar">
-                        <div class="post-user">
-                            <h3>Дмитрий Сидоров</h3>
-                            <span>Вчера</span>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <p>Отличная погода для прогулки в парке! Кто со мной в следующий раз? 😊</p>
-                        <div class="post-image">
-                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Парк">
-                        </div>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-btn like-btn"><i class="far fa-heart"></i> <span>31</span></button>
-                        <button class="action-btn comment-btn"><i class="far fa-comment"></i> <span>12</span></button>
-                        <button class="action-btn share-btn"><i class="far fa-share-square"></i> <span>Поделиться</span></button>
-                    </div>
-                </div>
+            <div class="posts" id="posts-container">
+                <!-- Посты будут загружаться через API -->
+                <div class="loading">Загрузка постов...</div>
             </div>
         </div>
     </main>
