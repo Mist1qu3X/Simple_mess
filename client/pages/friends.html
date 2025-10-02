@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Друзья - СоцСеть</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-users"></i>
+                <span>Doxogram</span>
+            </div>
+            
+            <div class="nav-tabs">
+                <a href="friends.html" class="tab">Друзья</a>
+                <a href="../index.html" class="tab">Лента</a>
+                <a href="chats.html" class="tab">Чаты</a>
+            </div>
+            
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="user-menu">
+                    <img src="../assets/avatar.jpg" alt="Аватар" class="user-avatar" id="user-avatar">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="content-header">
+                <h1>Друзья</h1>
+                <p>Ваш круг общения</p>
+            </div>
+            
+            <div class="search-friends">
+                <input type="text" placeholder="Поиск друзей..." class="search-input">
+            </div>
+            
+            <div class="friends-grid">
+                <div class="friend-card">
+                    <img src="https://ui-avatars.com/api/?name=Алексей+Иванов&background=10b981&color=fff" alt="Аватар Алексея Иванова" class="user-avatar">
+                    <div class="friend-info">
+                        <h3>Алексей Иванов</h3>
+                        <p>24 года</p>
+                        <span>Online</span>
+                    </div>
+                    <button class="friend-action">Написать</button>
+                </div>
+                
+                <div class="friend-card">
+                    <img src="https://ui-avatars.com/api/?name=Мария+Петрова&background=8b5cf6&color=fff" alt="Аватар Марии Петровой" class="user-avatar">
+                    <div class="friend-info">
+                        <h3>Мария Петрова</h3>
+                        <p>26 лет</p>
+                        <span>Был(a) 2 часа назад</span>
+                    </div>
+                    <button class="friend-action">Написать</button>
+                </div>
+                
+                <div class="friend-card">
+                    <img src="https://ui-avatars.com/api/?name=Дмитрий+Сидоров&background=f59e0b&color=fff" alt="Аватар Дмитрия Сидорова" class="user-avatar">
+                    <div class="friend-info">
+                        <h3>Дмитрий Сидоров</h3>
+                        <p>28 лет</p>
+                        <span>Online</span>
+                    </div>
+                    <button class="friend-action">Написать</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
+</html>

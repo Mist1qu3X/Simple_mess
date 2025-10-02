@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль - СоцСеть</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-users"></i>
+                <span>СоцСеть</span>
+            </div>
+            
+            <div class="nav-tabs">
+                <a href="friends.html" class="tab">Друзья</a>
+                <a href="../index.html" class="tab">Лента</a>
+                <a href="chats.html" class="tab">Чаты</a>
+            </div>
+            
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="user-menu">
+                    <img src="../assets/avatar.jpg" alt="Аватар" class="user-avatar" id="user-avatar">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container profile-container">
+            <!-- Шапка профиля -->
+            <div class="profile-header">
+                <div class="profile-cover">
+                    <div class="cover-image" id="cover-image">
+                        <button class="edit-cover-btn" id="edit-cover">
+                            <i class="fas fa-camera"></i>
+                            Сменить обложку
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="avatar-section">
+                        <div class="profile-avatar-container">
+                            <img src="../assets/avatar.jpg" alt="Аватар профиля" class="profile-avatar" id="profile-avatar">
+                            <button class="edit-avatar-btn" id="edit-avatar">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <h1 class="profile-name" id="profile-name">Иван Иванов</h1>
+                        <p class="profile-bio" id="profile-bio">Frontend разработчик · Люблю путешествия и технологии</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <span class="stat-number" id="posts-count">24</span>
+                                <span class="stat-label">Публикации</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number" id="friends-count">156</span>
+                                <span class="stat-label">Друзья</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number" id="likes-count">842</span>
+                                <span class="stat-label">Лайки</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button class="btn-primary" id="edit-profile">
+                            <i class="fas fa-edit"></i>
+                            Редактировать профиль
+                        </button>
+                        <button class="btn-secondary">
+                            <i class="fas fa-share-alt"></i>
+                            Поделиться профилем
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Основной контент профиля -->
+            <div class="profile-content">
+                <!-- Боковая панель -->
+                <div class="profile-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Информация</h3>
+                        <div class="info-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span id="info-work">Frontend Developer в IT Company</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span id="info-education">Университет IT</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-home"></i>
+                            <span id="info-city">Москва, Россия</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span id="info-birthday">15 мая 1995</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Увлечения</h3>
+                        <div class="hobbies-list" id="hobbies-list">
+                            <span class="hobby-tag">Программирование</span>
+                            <span class="hobby-tag">Фотография</span>
+                            <span class="hobby-tag">Путешествия</span>
+                            <span class="hobby-tag">Гейминг</span>
+                            <span class="hobby-tag">Музыка</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Достижения</h3>
+                        <div class="achievements">
+                            <div class="achievement">
+                                <i class="fas fa-fire achievement-icon gold"></i>
+                                <span>Страйк публикаций</span>
+                            </div>
+                            <div class="achievement">
+                                <i class="fas fa-users achievement-icon silver"></i>
+                                <span>100+ друзей</span>
+                            </div>
+                            <div class="achievement">
+                                <i class="fas fa-heart achievement-icon bronze"></i>
+                                <span>500+ лайков</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Лента профиля -->
+                <div class="profile-feed">
+                    <div class="create-post profile-post">
+                        <div class="post-input">
+                            <img src="../assets/avatar.jpg" alt="Ваш аватар" class="user-avatar">
+                            <input type="text" placeholder="Что у вас нового?" class="post-text" id="profile-post-text">
+                        </div>
+                        <div class="post-actions-create">
+                            <button class="action-btn-create"><i class="fas fa-image"></i> Фото</button>
+                            <button class="action-btn-create"><i class="fas fa-video"></i> Видео</button>
+                            <button class="action-btn-create"><i class="fas fa-map-marker-alt"></i> Место</button>
+                            <button class="publish-btn" id="profile-publish">Опубликовать</button>
+                        </div>
+                    </div>
+
+                    <div class="profile-posts" id="profile-posts">
+                        <!-- Посты будут добавляться через JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно редактирования профиля -->
+    <div class="modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Редактирование профиля</h2>
+                <button class="close-modal" id="close-edit-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="edit-name">Имя и фамилия</label>
+                        <input type="text" id="edit-name" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-bio">О себе</label>
+                        <textarea id="edit-bio" class="form-input" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-work">Место работы</label>
+                        <input type="text" id="edit-work" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-education">Образование</label>
+                        <input type="text" id="edit-education" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-city">Город</label>
+                        <input type="text" id="edit-city" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-birthday">Дата рождения</label>
+                        <input type="date" id="edit-birthday" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Увлечения (через запятую)</label>
+                        <input type="text" id="edit-hobbies" class="form-input" placeholder="Программирование, фотография, путешествия...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-edit">Отмена</button>
+                <button class="btn-primary" id="save-profile">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script src="../profile.js"></script>
+</body>
+</html>

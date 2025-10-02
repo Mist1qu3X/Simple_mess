@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чаты - СоцСеть</title>
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-users"></i>
+                <span>Doxogram</span>
+            </div>
+            
+            <div class="nav-tabs">
+                <a href="friends.html" class="tab">Друзья</a>
+                <a href="../index.html" class="tab">Лента</a>
+                <a href="chats.html" class="tab">Чаты</a>
+            </div>
+            
+            <div class="nav-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="user-menu">
+                    <img src="../assets/avatar.jpg" alt="Аватар" class="user-avatar" id="user-avatar">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="content-header">
+                <h1>Чаты</h1>
+                <p>Общайтесь с друзьями</p>
+            </div>
+            
+            <div class="chats-list">
+                <div class="chat-item">
+                    <img src="https://ui-avatars.com/api/?name=Алексей+Иванов&background=10b981&color=fff" alt="Аватар Алексея Иванова" class="user-avatar">
+                    <div class="chat-info">
+                        <h3>Алексей Иванов</h3>
+                        <p>Привет! Как дела?</p>
+                        <span>2 часа назад</span>
+                    </div>
+                    <div class="chat-badge">3</div>
+                </div>
+                
+                <div class="chat-item">
+                    <img src="https://ui-avatars.com/api/?name=Мария+Петрова&background=8b5cf6&color=fff" alt="Аватар Марии Петровой" class="user-avatar">
+                    <div class="chat-info">
+                        <h3>Мария Петрова</h3>
+                        <p>Посмотри мой новый пост!</p>
+                        <span>5 часов назад</span>
+                    </div>
+                </div>
+                
+                <div class="chat-item">
+                    <img src="https://ui-avatars.com/api/?name=Дмитрий+Сидоров&background=f59e0b&color=fff" alt="Аватар Дмитрия Сидорова" class="user-avatar">
+                    <div class="chat-info">
+                        <h3>Дмитрий Сидоров</h3>
+                        <p>Встречаемся завтра?</p>
+                        <span>Вчера</span>
+                    </div>
+                    <div class="chat-badge">1</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
+</html>
